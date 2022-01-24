@@ -1,0 +1,21 @@
+{
+    "name": "foxtool/yukon",
+    "description": "Simple Router",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vladimir Zakharchenko",
+            "email": "web.jungle.ua@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "phpunit/phpunit": "^5.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "FoxTool\\Yukon\\": "src/"
+        }
+    }
+}
