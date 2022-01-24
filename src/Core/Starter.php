@@ -2,7 +2,7 @@
 
 namespace Yukon\Core;
 
-use Yukon\Core\App\Router;
+use Yukon\Core\Router;
 
 class Starter
 {

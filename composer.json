@@ -10,9 +10,7 @@
         }
     ],
     "minimum-stability": "dev",
-    "require": {
-        "phpunit/phpunit": "^5.7"
-    },
+    "require": {},
     "autoload": {
         "psr-4": {
             "FoxTool\\Yukon\\": "src/"

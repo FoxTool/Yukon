@@ -1,7 +1,7 @@
 <?php
 namespace Yukon\Core;
 
-use Yukon\Core\App\Request;
+use Yukon\Core\Request;
 
 class Router extends RouterController
 {

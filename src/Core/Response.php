@@ -1,7 +1,7 @@
 <?php
 namespace Yukon\Core;
 
-use Yukon\Core\Contracts\HTTPResponse;
+use Yukon\Contracts\HTTPResponse;
 
 /**
  * Class implements finctionality for HTTP response.

@@ -111,8 +111,8 @@ class RouterController
      */
     protected function initRoutes()
     {
-        if (file_exists(ROOT . '/../config/routes.php')) {
-            include(ROOT . '/../config/routes.php');
+        if (file_exists(ROOT . '/../../../../../configs/routes.php')) {
+            include(ROOT . '/../../../../../configs/routes.php');
         } else {
             throw new \Exception('Routes file does not exists!');
         }
@@ -122,7 +122,7 @@ class RouterController
      * Return object with prefix property.
      *
      * @param string $prefix Prefix for the route
-     * @return object Yukon\Core\App\RouterController
+     * @return object Yukon\Core\RouterController
      */
     public static function prefix($prefix)
     {

@@ -1,7 +1,7 @@
 <?php
 namespace Yukon\Core;
 
-use Yukon\Core\Contracts\HTTPRequest;
+use Yukon\Contracts\HTTPRequest;
 
 class Request implements HTTPRequest
 {
