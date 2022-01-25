@@ -1,8 +1,8 @@
 <?php
 
-namespace Yukon\Core;
+namespace FoxTool\Yukon\Core;
 
-use Yukon\Core\Router;
+use FoxTool\Yukon\Core\Router;
 
 class Starter
 {

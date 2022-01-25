@@ -1,6 +1,6 @@
 <?php
 
-namespace Yukon\Core;
+namespace FoxTool\Yukon\Core;
 
 class RouterController
 {
@@ -111,8 +111,8 @@ class RouterController
      */
     protected function initRoutes()
     {
-        if (file_exists(ROOT . '/../../../../../configs/routes.php')) {
-            include(ROOT . '/../../../../../configs/routes.php');
+        if (file_exists(__DIR__ . '/../../../../../configs/routes.php')) {
+            include(__DIR__ . '/../../../../../configs/routes.php');
         } else {
             throw new \Exception('Routes file does not exists!');
         }

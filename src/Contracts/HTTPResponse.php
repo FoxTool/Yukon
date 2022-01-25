@@ -1,5 +1,6 @@
 <?php
-namespace Yukon\Contracts;
+
+namespace FoxTool\Yukon\Contracts;
 
 interface HTTPResponse
 {

@@ -1,7 +1,8 @@
 <?php
-namespace Yukon\Core;
 
-use Yukon\Contracts\HTTPRequest;
+namespace FoxTool\Yukon\Core;
+
+use FoxTool\Yukon\Contracts\HTTPRequest;
 
 class Request implements HTTPRequest
 {

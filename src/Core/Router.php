@@ -1,7 +1,8 @@
 <?php
-namespace Yukon\Core;
 
-use Yukon\Core\Request;
+namespace FoxTool\Yukon\Core;
+
+use FoxTool\Yukon\Core\Request;
 
 class Router extends RouterController
 {
@@ -139,7 +140,7 @@ class Router extends RouterController
                 throw new \Exception('Method not found.');
             }
 
-            $controllerFullName = '\Yukon\Controller\\' . $this->controller;
+            $controllerFullName = '\FoxTool\Blackburn\Controller\\' . $this->controller;
             $methodName = $this->method;
 
             $app = new $controllerFullName();
