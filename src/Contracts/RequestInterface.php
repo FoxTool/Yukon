@@ -2,7 +2,7 @@
 
 namespace FoxTool\Yukon\Contracts;
 
-interface HTTPRequest
+interface RequestInterface
 {
     public function headers($name);
     public function get($name);

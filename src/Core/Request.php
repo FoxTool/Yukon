@@ -2,9 +2,9 @@
 
 namespace FoxTool\Yukon\Core;
 
-use FoxTool\Yukon\Contracts\HTTPRequest;
+use FoxTool\Yukon\Contracts\RequestInterface;
 
-class Request implements HTTPRequest
+class Request implements RequestInterface
 {
     private $headers = [];
 

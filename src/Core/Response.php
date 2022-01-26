@@ -2,12 +2,12 @@
 
 namespace FoxTool\Yukon\Core;
 
-use FoxTool\Yukon\Contracts\HTTPResponse;
+use FoxTool\Yukon\Contracts\ResponseInterface;
 
 /**
  * Class implements finctionality for HTTP response.
  */
-class Response implements HTTPResponse
+class Response implements ResponseInterface
 {
 
     public static $codes = [

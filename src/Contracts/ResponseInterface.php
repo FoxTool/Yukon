@@ -2,7 +2,7 @@
 
 namespace FoxTool\Yukon\Contracts;
 
-interface HTTPResponse
+interface ResponseInterface
 {
     public function json($data);
     public function content($data);
