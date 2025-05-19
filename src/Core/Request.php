@@ -9,9 +9,8 @@ class Request implements RequestInterface
     private array $headers = [];
     private array $data = [];
     
-    public function __construct(array $input = [])
+    public function __construct()
     {
-        $this->data = $input;
         $this->getHeaders();
         $this->getParameters();
     }
@@ -24,6 +23,21 @@ class Request implements RequestInterface
     public function __set($name, $value)
     {
         $this->data[$name] = $value;
+    }
+
+    public function input(string $key, $default = null)
+    {
+        return $this->data[$key] ?? $default;
+    }
+
+    public function filled(string $key): bool
+    {
+        return isset($this->data[$key]) && $this->data[$key] !== '';
+    }
+
+    public function has(string $key): bool
+    {
+        return array_key_exists($key, $this->data);
     }
 
     public function all(): array
@@ -112,14 +126,4 @@ class Request implements RequestInterface
 
         return false;
     }
-
-    public function get($name)
-    {
-        if (property_exists($this, $name)) {
-            return $this->$name;
-        }
-
-        return false;
-    }
-
 }

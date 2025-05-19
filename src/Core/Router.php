@@ -2,6 +2,9 @@
 
 namespace FoxTool\Yukon\Core;
 
+use Composer\Factory;
+use Composer\Config;
+use Composer\IO\NullIO;
 use FoxTool\Yukon\Core\Request;
 
 class Router extends RouterController
@@ -140,7 +143,9 @@ class Router extends RouterController
                 throw new \Exception('Method not found.');
             }
 
-            $controllerFullName = '\FoxTool\Blackburn\Controller\\' . $this->controller;
+            $psr4Prefix = $this->getNamespacePrefix();
+            var_dump($psr4Prefix);
+            $controllerFullName = '\Wildcorsair\RentHelper\Controller\\' . $this->controller;
             $methodName = $this->method;
 
             $app = new $controllerFullName();
@@ -162,6 +167,29 @@ class Router extends RouterController
             }
         } catch (\Exception $e) {
             echo 'Error: ' . $e->getMessage();
+        }
+    }
+
+    private function getNamespacePrefix()
+    {
+        $composerFile = $_SERVER['DOCUMENT_ROOT'] . "/../composer.json";
+
+        try {
+            $factory = new Factory();
+            $config = new Config();
+            $io = new NullIO();
+
+            $composer = $factory->create($io, $config, $composerFile);
+            $autoload = $composer->getPackage()->getAutoload();
+
+            if (isset($autoload['psr-4'])) {
+                $psr4Prefix = $autoload['psr-4'];
+                return $psr4Prefix;
+            } else {
+                echo "There is no 'psr-4' section in the composer.json file";
+            }
+        } catch (\Exception $e) {
+            echo "Error: " . $e->getMessage() . "\n";
         }
     }
 }
