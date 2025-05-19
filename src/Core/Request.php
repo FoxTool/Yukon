@@ -6,12 +6,29 @@ use FoxTool\Yukon\Contracts\RequestInterface;
 
 class Request implements RequestInterface
 {
-    private $headers = [];
-
-    public function __construct()
+    private array $headers = [];
+    private array $data = [];
+    
+    public function __construct(array $input = [])
     {
+        $this->data = $input;
         $this->getHeaders();
         $this->getParameters();
+    }
+
+    public function __get($name)
+    {
+        return $this->data[$name] ?? null;
+    }
+
+    public function __set($name, $value)
+    {
+        $this->data[$name] = $value;
+    }
+
+    public function all(): array
+    {
+        return $this->data;
     }
 
     /**
