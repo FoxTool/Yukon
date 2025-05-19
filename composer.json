@@ -11,8 +11,7 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "twig/twig": "^3.3",
-        "composer/composer": "^2.8"
+        "twig/twig": "^3.3"
     },
     "autoload": {
         "psr-4": {
