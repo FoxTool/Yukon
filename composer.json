@@ -12,7 +12,7 @@
     "minimum-stability": "dev",
     "require": {
         "twig/twig": "^3.3",
-        "composer": "*"
+        "composer/composer": "^2.8"
     },
     "autoload": {
         "psr-4": {
