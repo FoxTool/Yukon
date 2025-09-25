@@ -6,12 +6,43 @@ use FoxTool\Yukon\Contracts\RequestInterface;
 
 class Request implements RequestInterface
 {
-    private $headers = [];
-
+    private array $headers = [];
+    private array $data = [];
+    
     public function __construct()
     {
         $this->getHeaders();
         $this->getParameters();
+    }
+
+    public function __get($name)
+    {
+        return $this->data[$name] ?? null;
+    }
+
+    public function __set($name, $value)
+    {
+        $this->data[$name] = $value;
+    }
+
+    public function input(string $key, $default = null)
+    {
+        return $this->data[$key] ?? $default;
+    }
+
+    public function filled(string $key): bool
+    {
+        return isset($this->data[$key]) && $this->data[$key] !== '';
+    }
+
+    public function has(string $key): bool
+    {
+        return array_key_exists($key, $this->data);
+    }
+
+    public function all(): array
+    {
+        return $this->data;
     }
 
     /**
@@ -95,14 +126,4 @@ class Request implements RequestInterface
 
         return false;
     }
-
-    public function get($name)
-    {
-        if (property_exists($this, $name)) {
-            return $this->$name;
-        }
-
-        return false;
-    }
-
 }

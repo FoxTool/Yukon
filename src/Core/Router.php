@@ -6,6 +6,10 @@ use FoxTool\Yukon\Core\Request;
 
 class Router extends RouterController
 {
+    /**
+     * @var array
+     */
+    protected array $config;
 
     /**
      * @var string
@@ -68,7 +72,30 @@ class Router extends RouterController
         } catch(\Exception $e) {
             echo 'Error: ' . $e->getMessage();
         }
+    }
 
+    private function getControllerFullName()
+    {
+        try {
+            $config = $_SERVER['DOCUMENT_ROOT'] . '/../configs/app.php';
+
+            if (!file_exists($config)) {
+                echo "There is no configuration file 'app.php' in the 'configs' catalog";
+                return;
+            }
+            
+            $this->config = require_once($config);
+            $namespace = rtrim($this->config['controller_namespace'], '\\') . '\\';
+
+            if (empty($namespace)) {
+                echo "There is no 'controller_namespace' parameter in the 'configs/app.php' file";
+                return;
+            }
+
+            return $namespace . $this->controller;
+        } catch (\Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
     }
 
     /**
@@ -140,7 +167,7 @@ class Router extends RouterController
                 throw new \Exception('Method not found.');
             }
 
-            $controllerFullName = '\FoxTool\Blackburn\Controller\\' . $this->controller;
+            $controllerFullName = $this->getControllerFullName();
             $methodName = $this->method;
 
             $app = new $controllerFullName();
