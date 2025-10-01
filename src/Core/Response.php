@@ -22,7 +22,7 @@ class Response implements ResponseInterface
         502 => 'Bad Gateway'
     ];
 
-    public function __construct($status = 200) {
+    public function __construct(int $status = 200) {
         if (array_key_exists($status, self::$codes)) {
             header("HTTP/1.1 {$status} " . self::$codes[$status]);
         }
@@ -42,5 +42,11 @@ class Response implements ResponseInterface
     public function content($data)
     {
         echo htmlspecialchars($data);
+    }
+
+    public static function redirect($url, $statusCode = 303)
+    {
+        header('Location: ' . $url, true, $statusCode);
+        die();
     }
 }
