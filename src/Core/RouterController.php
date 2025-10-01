@@ -111,8 +111,8 @@ class RouterController
      */
     protected function initRoutes()
     {
-        if (file_exists(__DIR__ . '/../../../../../configs/routes.php')) {
-            include(__DIR__ . '/../../../../../configs/routes.php');
+        if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/../configs/routes.php')) {
+            include($_SERVER['DOCUMENT_ROOT'] . '/../configs/routes.php');
         } else {
             throw new \Exception('Routes file does not exists!');
         }

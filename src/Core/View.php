@@ -12,7 +12,7 @@ class View implements ViewInterface
 
     public static function make(string $tamplate, array $data = [])
     {
-        $templatesDir = __DIR__ . '/../../../../../resources/views';
+        $templatesDir = $_SERVER['DOCUMENT_ROOT'] . '/../resources/views';
         $fullTemplateName = "{$tamplate}.twig.php";
 
         $loader = new \Twig\Loader\FilesystemLoader($templatesDir);

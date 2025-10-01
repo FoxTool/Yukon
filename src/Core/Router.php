@@ -2,6 +2,7 @@
 
 namespace FoxTool\Yukon\Core;
 
+use FoxTool\Yukon\Core\Container;
 use FoxTool\Yukon\Core\Request;
 
 class Router extends RouterController
@@ -170,7 +171,9 @@ class Router extends RouterController
             $controllerFullName = $this->getControllerFullName();
             $methodName = $this->method;
 
-            $app = new $controllerFullName();
+            $container = new Container();
+            $app = $container->resolve($controllerFullName);
+
             if (method_exists($app, $methodName)) {
                 $metaData = $this->getMethodMetaData($app, $methodName);
                 if ($metaData->paramsCount > count($params)) {
