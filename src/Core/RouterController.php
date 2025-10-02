@@ -2,6 +2,8 @@
 
 namespace FoxTool\Yukon\Core;
 
+use FoxTool\Yukon\Core\Request;
+
 class RouterController
 {
     public static $routes = [];
@@ -10,6 +12,25 @@ class RouterController
     public $uri;
     public $queryString;
     public $queryParams = [];
+    public $authUser = [];
+    private static $self;
+
+    private static function init($route, $callback)
+    {
+        $self = __CLASS__;
+        self::$self = new $self();
+
+        if ($route == '') {
+            throw new \Exception('Set the <b>route</b> parameter for the <b>' . $callback . '</b>');
+
+        }
+
+        if (!empty(self::$prefix)) {
+          $route = self::$prefix . $route;
+        }
+
+        return $route;
+    }
 
     /**
      * Define route for 'GET' method.
@@ -19,15 +40,10 @@ class RouterController
      */
     public static function get($route, $callback)
     {
-        if ($route == '') {
-            return false;
-        }
+        $route = self::init($route, $callback);
+        self::$routes[] = array('GET', $route, $callback, null);
 
-        if (!empty(self::$prefix)) {
-          $route = self::$prefix . $route;
-        }
-
-        self::$routes[] = array('GET', $route, $callback);
+        return self::$self;
     }
 
     /**
@@ -38,15 +54,10 @@ class RouterController
      */
     public static function post($route, $callback)
     {
-        if ($route == '') {
-            return false;
-        }
+        $route = self::init($route, $callback);
+        self::$routes[] = array('POST', $route, $callback, null);
 
-        if (!empty(self::$prefix)) {
-          $route = self::$prefix . $route;
-        }
-
-        self::$routes[] = array('POST', $route, $callback);
+        return self::$self;
     }
 
     /**
@@ -57,15 +68,10 @@ class RouterController
      */
     public static function put($route, $callback)
     {
-        if ($route == '') {
-            return false;
-        }
+        $route = self::init($route, $callback);
+        self::$routes[] = array('PUT', $route, $callback, null);
 
-        if (!empty(self::$prefix)) {
-          $route = self::$prefix . $route;
-        }
-
-        self::$routes[] = array('PUT', $route, $callback);
+        return self::$self;
     }
 
     /**
@@ -76,15 +82,10 @@ class RouterController
      */
     public static function patch($route, $callback)
     {
-        if ($route == '') {
-            return false;
-        }
+        $route = self::init($route, $callback);
+        self::$routes[] = array('PATCH', $route, $callback, null);
 
-        if (!empty(self::$prefix)) {
-          $route = self::$prefix . $route;
-        }
-
-        self::$routes[] = array('PATCH', $route, $callback);
+        return self::$self;
     }
 
     /**
@@ -95,15 +96,10 @@ class RouterController
      */
     public static function delete($route, $callback)
     {
-        if ($route == '') {
-            return false;
-        }
+        $route = self::init($route, $callback);
+        self::$routes[] = array('DELETE', $route, $callback, null);
 
-        if (!empty(self::$prefix)) {
-          $route = self::$prefix . $route;
-        }
-
-        self::$routes[] = array('DELETE', $route, $callback);
+        return self::$self;
     }
 
     /**
@@ -126,13 +122,11 @@ class RouterController
      */
     public static function prefix($prefix)
     {
-      $self = __CLASS__;
-      $self = new $self();
-      if (isset($prefix) && !empty($prefix)) {
-        $self->_prefix = $prefix;
-      }
+        if (isset($prefix) && !empty($prefix)) {
+            self::$self->_prefix = $prefix;
+        }
 
-      return $self;
+        return self::$self;
     }
 
     /**
@@ -143,9 +137,9 @@ class RouterController
      */
     public function group($callback)
     {
-      self::$prefix = $this->_prefix;
-      $callback();
-      self::$prefix = null;
+        self::$prefix = $this->_prefix;
+        $callback();
+        self::$prefix = null;
     }
 
     protected function parseURI()
@@ -174,5 +168,16 @@ class RouterController
     protected function getRequestMethod()
     {
         return $_SERVER['REQUEST_METHOD'];
+    }
+
+    public function middleware($middleware)
+    {
+        /**
+         * Index number 3 is set as null by default and is used for store
+         * of the middleware name. It's not the best solution but allows avoiding
+         * complex structure with associative array and allows using "list" function
+         * for each route item in the routes array.
+         */
+        self::$routes[count(self::$routes) -1][3] = $middleware;
     }
 }
