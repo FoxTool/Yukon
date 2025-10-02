@@ -4,6 +4,7 @@ namespace FoxTool\Yukon\Core;
 
 use FoxTool\Yukon\Core\Container;
 use FoxTool\Yukon\Core\Request;
+use FoxTool\Yukon\Middleware\ApiAuthMiddleware;
 
 class Router extends RouterController
 {
@@ -23,6 +24,16 @@ class Router extends RouterController
     public $method;
 
     /**
+     * @var string
+     */
+    public $guard;
+
+    /**
+     * @var string
+     */
+    public $authUser;
+
+    /**
      * @var boolean
      */
     private $isRouteMatch = false;
@@ -36,7 +47,7 @@ class Router extends RouterController
             $requestMethod = $this->getRequestMethod();
 
             foreach (self::$routes as $params) {
-                list($method, $route, $callback) = $params;
+                list($method, $route, $callback, $middleware) = $params;
 
                 $route = (strlen($route) > 1) ? rtrim($route, '/') : $route;
                 $transformedRoute = preg_replace('/{[\w_-]+}/', '[\w_-]+', $route);
@@ -52,6 +63,7 @@ class Router extends RouterController
 
                             $this->controller = $controller;
                             $this->method = $method;
+                            $this->guard = $middleware;
                         }
                         $this->isRouteMatch = true;
                         break;
@@ -84,7 +96,7 @@ class Router extends RouterController
                 echo "There is no configuration file 'app.php' in the 'configs' catalog";
                 return;
             }
-            
+
             $this->config = require_once($config);
             $namespace = rtrim($this->config['controller_namespace'], '\\') . '\\';
 
@@ -171,8 +183,21 @@ class Router extends RouterController
             $controllerFullName = $this->getControllerFullName();
             $methodName = $this->method;
 
+            if (!is_null($this->guard)) {
+                if ($this->guard === 'api') {
+                    $request = new Request();
+                    $middleware = new ApiAuthMiddleware($request);
+                    $this->authUser = $middleware->authenticate();
+                }
+
+                if ($this->guard === 'web') {
+                    // TODO: Add the guard to protect routes with server sessions
+                }
+            }
+
             $container = new Container();
             $app = $container->resolve($controllerFullName);
+            $app->setAuthUser($this->authUser);
 
             if (method_exists($app, $methodName)) {
                 $metaData = $this->getMethodMetaData($app, $methodName);

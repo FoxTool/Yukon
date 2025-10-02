@@ -37,11 +37,13 @@ class Response implements ResponseInterface
     public function json($data)
     {
         echo json_encode($data);
+        die();
     }
 
     public function content($data)
     {
         echo htmlspecialchars($data);
+        die();
     }
 
     public static function redirect($url, $statusCode = 303)
